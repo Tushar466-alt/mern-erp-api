@@ -18,11 +18,12 @@ const projectSchema = new mongoose.Schema({
         required: true
     },
     project_workers: {
-        type: String,
+        type: Number,
         required: true
     },
     project_status: {
-        type: String,
+        type: String, 
+        enum: ['complete', 'incomplete', 'pending'],
         required: true
     }
 });

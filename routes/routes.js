@@ -1,9 +1,22 @@
 const express = require('express');
-const { project } = require('../controller/index.js');
+const { newProject, 
+        getProject, 
+        updateProject, 
+        updateIndivisualsField,
+      } = require('../controller/index.js');
 const { validateProjectData } = require('../validater/validate.js');
 const router = express.Router();
 
-router.post('/project', validateProjectData, project);
 
+router
+    .route('/project')
+    .get(getProject)
+    .post(validateProjectData, newProject)
+
+router
+      .route('/project/:id')
+      .put(validateProjectData, updateProject)
+      .patch(validateProjectData, updateIndivisualsField)
+      
 
 module.exports = router;
