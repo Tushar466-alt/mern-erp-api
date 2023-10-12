@@ -40,7 +40,7 @@ async function newProject(req, res) {
 
 async function getProject(req, res) {
     try{
-        const data = await project.find();
+        const data = await projectModel.find();
 
         if(data.length == 0) {
             res.status(404).json({message: "Project not found"});
@@ -48,7 +48,7 @@ async function getProject(req, res) {
         return res.status(200).json(data);
         
     }catch(err) {
-        return res.status(500).json({message: "Internel server error"});
+        return res.status(500).json({message: "Data fetch error"});
     }
 }
 
@@ -73,7 +73,7 @@ async function updateIndivisualsField(req, res) {
         return res.status(200).json({ message: "Product updated" })
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Project not pdate." });
+        return res.status(500).json({ message: "Project not update." });
     }
 }
 
@@ -104,5 +104,5 @@ module.exports = {
     newProject,
     getProject,
     updateProject,
-    updateIndivisualsField,
+    updateIndivisualsField
 };
