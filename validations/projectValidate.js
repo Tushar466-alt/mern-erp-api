@@ -1,38 +1,13 @@
-const moment = require('moment');
-const { body, check } = require('express-validator');
-const { projectModel } = require('../model/project.js');
-
-const isOnlyCharacters = async (value) => {
-    const existingProjectName = await projectModel.findOne({ project_name: value });
-    
-            if (existingProjectName) {
-              throw new Error('Project name is already in use');
-            }
-
-    return true;
-  };
-
-const dateValidate = async (value, { req }) => {
-
-    if (!moment(value, 'YYYY-MM-DD', true).isValid()) {
-        throw new Error('Invalid date format. Please provide a date in YYYY-MM-DD format.');
-    }
-    
-    const existingStartDate = await projectModel.findOne({ project_start_date: value });
-    if (existingStartDate) {
-        throw new Error('Date already taken. Please provide another date.');
-    }
-    
-    return true;
-    }
+const { body } = require('express-validator');
+const { isOnlyCharacters, dateValidate, } = require('../controller/projectController.js');
 
 const validateProjectData = [
-    check('project_name')
+    body('project_name')
         .isString()
         .notEmpty()
         .withMessage('Project name is required')
         .custom(isOnlyCharacters)
-        .matches(/^[A-Za-z]+$/)
+        .isAlpha()
         .withMessage('Invalid input. Only characters are allowed.')
         .trim(),
 

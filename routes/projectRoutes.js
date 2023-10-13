@@ -1,11 +1,11 @@
 const express = require('express');
+const router = express.Router();
 const { newProject, 
         getProject, 
         updateProject, 
         updateIndivisualsField,
-      } = require('../controller/index.js');
-const { validateProjectData } = require('../validater/validate.js');
-const router = express.Router();
+      } = require('../controller/projectController.js');
+const { validateProjectData } = require('../validations/projectValidate.js');
 
 
 router

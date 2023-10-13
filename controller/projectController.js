@@ -1,7 +1,32 @@
-const { projectModel, project } = require('../model/project.js');
+const moment = require('moment');
+const { projectModel, project } = require('../model/projectModel.js');
 const { validationResult } = require('express-validator');
 
 
+const isOnlyCharacters = async (value) => {
+    const existingProjectName = await projectModel.findOne({ project_name: value });
+    
+            if (existingProjectName) {
+              throw new Error('Project name is already in use');
+            }
+
+    return true;
+  };
+
+const dateValidate = async (value, { req }) => {
+
+    if (!moment(value, 'YYYY-MM-DD', true).isValid()) {
+        throw new Error('Invalid date format. Please provide a date in YYYY-MM-DD format.');
+    }
+    
+    const existingStartDate = await projectModel.findOne({ project_start_date: value });
+    if (existingStartDate) {
+        throw new Error('Date already taken. Please provide another date.');
+    }
+    
+    return true;
+    }
+    
 async function newProject(req, res) {
     try {
         const errors = validationResult(req);
@@ -97,12 +122,14 @@ async function updateProject(req, res) {
         return res.status(200).json({ message: "Product updated" })
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Project not pdate." });
+        return res.status(500).json({ message: "Project not Update." });
     }
 }
 module.exports = {
     newProject,
     getProject,
     updateProject,
-    updateIndivisualsField
+    updateIndivisualsField,
+    isOnlyCharacters,
+    dateValidate,
 };

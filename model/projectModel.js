@@ -10,11 +10,11 @@ const projectSchema = new mongoose.Schema({
         required: true
     },
     project_start_date: {
-        type: String,
+        type: Date,
         required: true
     },
     project_due_date: {
-        type: String,
+        type: Date,
         required: true
     },
     project_workers: {
